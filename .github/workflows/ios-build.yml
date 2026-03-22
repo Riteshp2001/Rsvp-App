@@ -1,0 +1,65 @@
+name: ios-build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work
+      - main
+
+jobs:
+  build-ios-app:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prebuild iOS project
+        env:
+          CI: '1'
+        run: pnpm exec expo prebuild --platform ios
+
+      - name: Install CocoaPods
+        working-directory: ios
+        run: pod install
+
+      - name: Build unsigned iOS app bundle
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -workspace rsvpreader.xcworkspace \
+            -scheme rsvpreader \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package .app artifact
+        working-directory: ios
+        run: |
+          mkdir -p artifacts
+          cp -R build/Build/Products/Release-iphonesimulator/rsvpreader.app artifacts/rsvpreader.app
+
+      - name: Upload iOS app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-rsvpreader-app
+          path: ios/artifacts/rsvpreader.app

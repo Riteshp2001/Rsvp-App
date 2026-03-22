@@ -9,17 +9,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.rsvpreader"
+      "bundleIdentifier": "com.gyrolet.rsvpreader"
     },
     "android": {
-      "package": "com.example.rsvpreader",
+      "package": "com.gyrolet.rsvpreader",
       "adaptiveIcon": {
         "backgroundColor": "#05070A"
       }
     },
-    "plugins": [
-      "expo-document-picker",
-      "react-native-reanimated/plugin"
-    ]
+    "plugins": ["expo-document-picker"]
   }
 }

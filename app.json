@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "RSVP Reader",
+    "slug": "rsvp-reader",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.rsvpreader"
+    },
+    "android": {
+      "package": "com.example.rsvpreader",
+      "adaptiveIcon": {
+        "backgroundColor": "#05070A"
+      }
+    },
+    "plugins": [
+      "expo-document-picker",
+      "react-native-reanimated/plugin"
+    ]
+  }
+}
